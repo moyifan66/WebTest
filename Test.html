@@ -1,1 +1,41 @@
-﻿<embed src="1.pdf" width="100%" height="100%" type="application/pdf">
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Viewer</title>
+    <!-- 引入PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+</head>
+<body>
+
+    <canvas id="pdf-viewer"></canvas>
+
+    <script>
+        // 使用PDF.js加载和显示PDF
+        const pdfUrl = '1.pdf';
+        const pdfViewer = document.getElementById('pdf-viewer');
+
+        // 使用PDF.js
+        pdfjsLib.getDocument(pdfUrl).promise.then(pdfDoc => {
+            const pageNum = 1;
+            pdfDoc.getPage(pageNum).then(page => {
+                const canvas = document.getElementById('pdf-viewer');
+                const context = canvas.getContext('2d');
+
+                const viewport = page.getViewport({ scale: 1.5 });
+
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport,
+                };
+                page.render(renderContext);
+            });
+        });
+    </script>
+
+</body>
+</html>
